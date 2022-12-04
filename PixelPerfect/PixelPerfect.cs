@@ -108,13 +108,13 @@ namespace PixelPerfect
             _lineThicc = _configuration.LineThicc;
             _chevCol = _configuration.ChevCol;
             _lineCol = _configuration.LineCol;
-            
+
             pluginInterface.UiBuilder.Draw += DrawWindow;
             pluginInterface.UiBuilder.OpenConfigUi += ConfigWindow;
             commandManager.AddHandler("/pp", new CommandInfo(Command)
             {
-                HelpMessage = "Pixel Perfect config." +
-                              "\nArguments of 'ring', 'ring2', 'north' will enable/disable those features."
+                HelpMessage = "Pixel Perfect 配置." +
+                              "\n通过这些参数 'ring', 'ring2', 'north' 来开关这些功能."
             });
         }
 
@@ -137,209 +137,177 @@ namespace PixelPerfect
             if (_config)
             {
                 ImGui.SetNextWindowSize(new Num.Vector2(300, 500), ImGuiCond.FirstUseEver);
-                ImGui.Begin("Pixel Perfect Config", ref _config);
-                
-                ImGui.Checkbox("Combat Only", ref _combat);
+                ImGui.Begin("Pixel Perfect 配置", ref _config);
+
+                ImGui.Checkbox("只在战斗启用", ref _combat);
                 if (ImGui.IsItemHovered())
                 {
-                    ImGui.SetTooltip("Only show all of this during combat");
+                    ImGui.SetTooltip("战斗外不显示");
                 }
                 ImGui.SameLine();
-                ImGui.Checkbox("Instance Only", ref _instance);
+                ImGui.Checkbox("只在副本启用", ref _instance);
                 if (ImGui.IsItemHovered())
                 {
-                    ImGui.SetTooltip("Only show all of this during instances (like dungeons, raids etc)");
+                    ImGui.SetTooltip("例如迷宫、讨伐");
                 }
                 ImGui.SameLine();
-                ImGui.Checkbox("Show in cutscene", ref _cutscene);
+                ImGui.Checkbox("过场动画中启用", ref _cutscene);
                 if (ImGui.IsItemHovered())
                 {
-                    ImGui.SetTooltip("Show all of this during cutscene");
+                    ImGui.SetTooltip("比如战斗中的转场与黑屏");
                 }
 
                 ImGui.Separator();
-                ImGui.Checkbox("Hitbox", ref _enabled);
+                ImGui.Checkbox("判定点", ref _enabled);
                 if (ImGui.IsItemHovered())
                 {
-                    ImGui.SetTooltip("A visual representation of your hitbox");
+                    ImGui.SetTooltip("一个方便擦弹的判定点");
                 }
                 if (_enabled)
                 {
                     ImGui.SameLine();
-                    ImGui.ColorEdit4("Hitbox Colour", ref _col, ImGuiColorEditFlags.NoInputs);
-                    if (ImGui.IsItemHovered())
-                    {
-                        ImGui.SetTooltip("The colour of the hitbox");
-                    }
+                    ImGui.ColorEdit4("判定点颜色", ref _col, ImGuiColorEditFlags.NoInputs);
                 }
-                ImGui.Checkbox("Outer Ring", ref _circle);
+                ImGui.Checkbox("判定点描边", ref _circle);
                 if (ImGui.IsItemHovered())
                 {
-                    ImGui.SetTooltip("A tiny circle of colour around the hitbox dot");
+                    ImGui.SetTooltip("一个围绕判定点的小小圆环");
                 }
                 if (_circle)
                 {
                     ImGui.SameLine();
-                    ImGui.ColorEdit4("Outer Colour", ref _col2, ImGuiColorEditFlags.NoInputs);
-                    if (ImGui.IsItemHovered())
-                    {
-                        ImGui.SetTooltip("The colour of the ring");
-                    }
+                    ImGui.ColorEdit4("描边颜色", ref _col2, ImGuiColorEditFlags.NoInputs);
                 }
-                ImGui.Checkbox("Show North", ref _north1);
+                ImGui.Checkbox("显示指北", ref _north1);
                 if (ImGui.IsItemHovered())
                 {
-                    ImGui.SetTooltip("An indicator that always points north");
+                    ImGui.SetTooltip("显示一个始终指向正北边的标记来避免迷失人生的方向");
                 }
                 if (_north1)
                 {
                     ImGui.SameLine();
-                    ImGui.Checkbox("Line", ref _north2);
+                    ImGui.Checkbox("线", ref _north2);
                     if (ImGui.IsItemHovered())
                     {
-                        ImGui.SetTooltip("What can I say. It's a line");
+                        ImGui.SetTooltip("这是一条线…");
                     }
                     ImGui.SameLine();
-                    ImGui.Checkbox("Chevron", ref _north3);
+                    ImGui.Checkbox("鏃", ref _north3);
                     if (ImGui.IsItemHovered())
                     {
-                        ImGui.SetTooltip("Fancy word for a pointer");
+                        ImGui.SetTooltip("“箭头”的高级称呼。");
                     }
                     if (_north2)
                     {
-                        ImGui.DragFloat("Line Offset", ref _lineOffset);
+                        ImGui.DragFloat("线偏移", ref _lineOffset);
                         if (ImGui.IsItemHovered())
                         {
-                            ImGui.SetTooltip("How far from your hitbox to start the line");
+                            ImGui.SetTooltip("线的起始点与人物判定点的距离");
                         }
-                        ImGui.DragFloat("Line Length", ref _lineLength);
+                        ImGui.DragFloat("线长", ref _lineLength);
                         if (ImGui.IsItemHovered())
                         {
-                            ImGui.SetTooltip("How long the line is");
+                            ImGui.SetTooltip("线的长度\n真的有必要给所有条目都加悬浮提示么？");
                         }
-                        ImGui.DragFloat("Line Thickness", ref _lineThicc);
+                        ImGui.DragFloat("线粗", ref _lineThicc);
                         if (ImGui.IsItemHovered())
                         {
-                            ImGui.SetTooltip("How thicc the line is");
+                            ImGui.SetTooltip("线的粗细\n英文可以变变语序，可这标签和提示翻译成中文完全一样啊！");
                         }
-                        ImGui.ColorEdit4("Line Colour", ref _lineCol, ImGuiColorEditFlags.NoInputs);
+                        ImGui.ColorEdit4("线色", ref _lineCol, ImGuiColorEditFlags.NoInputs);
                         if (ImGui.IsItemHovered())
                         {
-                            ImGui.SetTooltip("The colour of the line");
+                            ImGui.SetTooltip("线的颜色\n这个“色”，应该读“se”还是“shai”呢？");
                         }
                     }
                     if (_north3)
                     {
-                        ImGui.DragFloat("Chevron Offset", ref _chevOffset);
+                        ImGui.DragFloat("鏃之始", ref _chevOffset);
                         if (ImGui.IsItemHovered())
                         {
-                            ImGui.SetTooltip("These are all a bit iffy, due to maths. Mess around with them");
+                            ImGui.SetTooltip("數學之由，皆有所不定。 亂用之。");
                         }
-                        ImGui.DragFloat("Chevron Length", ref _chevLength);
+                        ImGui.DragFloat("鏃之長", ref _chevLength);
                         if (ImGui.IsItemHovered())
                         {
-                            ImGui.SetTooltip("These are all a bit iffy, due to maths. Mess around with them");
+                            ImGui.SetTooltip("數學之由，皆有所不定。 亂用之。");
                         }
-                        ImGui.DragFloat("Chevron Radius", ref _chevRad);
+                        ImGui.DragFloat("鏃之徑", ref _chevRad);
                         if (ImGui.IsItemHovered())
                         {
-                            ImGui.SetTooltip("These are all a bit iffy, due to maths. Mess around with them");
+                            ImGui.SetTooltip("數學之由，皆有所不定。 亂用之。");
                         }
-                        ImGui.DragFloat("Chevron Sin", ref _chevSin);
+                        ImGui.DragFloat("鏃之弦", ref _chevSin);
                         if (ImGui.IsItemHovered())
                         {
-                            ImGui.SetTooltip("These are all a bit iffy, due to maths. Mess around with them");
+                            ImGui.SetTooltip("數學之由，皆有所不定。 亂用之。");
                         }
-                        ImGui.DragFloat("Chevron Thickness", ref _chevThicc);
-                        if (ImGui.IsItemHovered())
-                        {
-                            ImGui.SetTooltip("How thicc the Chevron is");
-                        }
-                        ImGui.ColorEdit4("Chevron Colour", ref _chevCol, ImGuiColorEditFlags.NoInputs);
-                        if (ImGui.IsItemHovered())
-                        {
-                            ImGui.SetTooltip("The colour of the Chevron");
-                        }
+                        ImGui.DragFloat("鏃之細", ref _chevThicc);
+                        ImGui.ColorEdit4("鏃之色", ref _chevCol, ImGuiColorEditFlags.NoInputs);
                     }
                 }
 
-                
-                
-                
+
+
+
                 ImGui.Separator();
-                ImGui.Checkbox("Ring", ref _ring);
+                ImGui.Checkbox("圆环", ref _ring);
                 if (ImGui.IsItemHovered())
                 {
-                    ImGui.SetTooltip("Show a ring around your character");
+                    ImGui.SetTooltip("在人物周围显示一个圆环。\n可用于标识技能的最大距离。");
                 }
                 if (_ring)
                 {
-                    ImGui.DragFloat("Yalms", ref _radius);
+                    ImGui.DragFloat("半径", ref _radius);
                     if (ImGui.IsItemHovered())
                     {
-                        ImGui.SetTooltip("The radius of the ring");
+                        ImGui.SetTooltip("单位为游戏内的[米]");
                     }
-                    ImGui.DragFloat("Thickness", ref _thickness);
+                    ImGui.DragFloat("粗细", ref _thickness);
+                    ImGui.DragInt("平滑度", ref _segments);
                     if (ImGui.IsItemHovered())
                     {
-                        ImGui.SetTooltip("The thiccness of the ring");
+                        ImGui.SetTooltip("用于模拟圆形的正多边形的细分级数N\n当N趋近于无穷时将可以获得一个完美的圆形\n在拓扑学上，简单多边形和圆形同胚(Homeomorphism)");
                     }
-                    ImGui.DragInt("Smoothness", ref _segments);
-                    if (ImGui.IsItemHovered())
-                    {
-                        ImGui.SetTooltip("How many segments to make the ring out of");
-                    }
-                    ImGui.ColorEdit4("Ring Colour", ref _colRing, ImGuiColorEditFlags.NoInputs);
-                    if (ImGui.IsItemHovered())
-                    {
-                        ImGui.SetTooltip("The colour of the ring");
-                    }
+                    ImGui.ColorEdit4("圆环颜色", ref _colRing, ImGuiColorEditFlags.NoInputs);
                 }
                 ImGui.Separator();
-                ImGui.Checkbox("Ring 2", ref _ring2);
+                ImGui.Checkbox("圆环 2", ref _ring2);
                 if (ImGui.IsItemHovered())
                 {
-                    ImGui.SetTooltip("Show another ring around your character");
+                    ImGui.SetTooltip("在人物周围显示另一个圆环。\n可用于标识另一个技能的最大距离。");
                 }
                 if (_ring2)
                 {
-                    ImGui.DragFloat("Yalms 2", ref _radius2);
+                    ImGui.DragFloat("半径 2", ref _radius2);
                     if (ImGui.IsItemHovered())
                     {
-                        ImGui.SetTooltip("The radius of the ring");
+                        ImGui.SetTooltip("单位为游戏内的[米]");
                     }
-                    ImGui.DragFloat("Thickness 2", ref _thickness2);
+                    ImGui.DragFloat("粗细 2", ref _thickness2);
+                    ImGui.DragInt("平滑度 2", ref _segments2);
                     if (ImGui.IsItemHovered())
                     {
-                        ImGui.SetTooltip("The thiccness of the ring");
+                        ImGui.SetTooltip("用于模拟圆形的正多边形的细分级数N\n当N趋近于无穷时将可以获得一个完美的圆形\n在拓扑学上，简单多边形和圆形同胚(Homeomorphism)");
                     }
-                    ImGui.DragInt("Smoothness 2", ref _segments2);
-                    if (ImGui.IsItemHovered())
-                    {
-                        ImGui.SetTooltip("How many segments to make the ring out of");
-                    }
-                    ImGui.ColorEdit4("Ring Colour 2", ref _colRing2, ImGuiColorEditFlags.NoInputs);
-                    if (ImGui.IsItemHovered())
-                    {
-                        ImGui.SetTooltip("The colour of the ring");
-                    }
+                    ImGui.ColorEdit4("圆环颜色 2", ref _colRing2, ImGuiColorEditFlags.NoInputs);
                 }
 
 
 
-                if (ImGui.Button("Save and Close Config"))
+                if (ImGui.Button("保存 and Close 配置"))
                 {
                     SaveConfig();
                     _config = false;
                 }
-                
+
 
                 ImGui.SameLine();
                 ImGui.PushStyleColor(ImGuiCol.Button, 0xFF000000 | 0x005E5BFF);
                 ImGui.PushStyleColor(ImGuiCol.ButtonActive, 0xDD000000 | 0x005E5BFF);
                 ImGui.PushStyleColor(ImGuiCol.ButtonHovered, 0xAA000000 | 0x005E5BFF);
 
-                if (ImGui.Button("Buy Haplo a Hot Chocolate"))
+                if (ImGui.Button("给 Haplo 买一杯热巧克力"))
                 {
                     Process.Start(new ProcessStartInfo
                     {
@@ -350,7 +318,7 @@ namespace PixelPerfect
 
                 ImGui.PopStyleColor(3);
                 ImGui.End();
-                
+
                 if (dirtyHack > 100)
                 {
                     SaveConfig();
@@ -361,7 +329,7 @@ namespace PixelPerfect
             }
 
             if (_cs.LocalPlayer == null) return;
-            
+
             if (_combat)
             {
                 if (!_condition[ConditionFlag.InCombat])
@@ -394,7 +362,7 @@ namespace PixelPerfect
             if (!_gui.WorldToScreen(
                 new Num.Vector3(actor.Position.X, actor.Position.Y, actor.Position.Z),
                 out var pos)) return;
-            
+
             ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Num.Vector2(0, 0));
             ImGuiHelpers.ForceNextWindowMainViewport();
             ImGuiHelpers.SetNextWindowPosRelativeMainViewport(new Num.Vector2(0, 0));
@@ -402,16 +370,16 @@ namespace PixelPerfect
                 ImGuiWindowFlags.NoInputs | ImGuiWindowFlags.NoNav | ImGuiWindowFlags.NoTitleBar |
                 ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoBackground);
             ImGui.SetWindowSize(ImGui.GetIO().DisplaySize);
-            
-           if(_enabled)
-           {
-               ImGui.GetWindowDrawList().AddCircleFilled(
-                   new Num.Vector2(pos.X, pos.Y),
-                   2f,
-                   ImGui.GetColorU32(_col),
-                   100);
-           }
-           if (_circle)
+
+            if (_enabled)
+            {
+                ImGui.GetWindowDrawList().AddCircleFilled(
+                    new Num.Vector2(pos.X, pos.Y),
+                    2f,
+                    ImGui.GetColorU32(_col),
+                    100);
+            }
+            if (_circle)
             {
                 ImGui.GetWindowDrawList().AddCircle(
                     new Num.Vector2(pos.X, pos.Y),
@@ -481,11 +449,11 @@ namespace PixelPerfect
                         ImGui.GetColorU32(_chevCol), _chevThicc);
                 }
             }
-            
+
             ImGui.End();
             ImGui.PopStyleVar();
         }
-        
+
 
         private void Command(string command, string arguments)
         {
@@ -493,11 +461,11 @@ namespace PixelPerfect
             {
                 _ring = !_ring;
             }
-            else if(arguments == "ring2")
+            else if (arguments == "ring2")
             {
                 _ring2 = !_ring2;
             }
-            else if(arguments == "north")
+            else if (arguments == "north")
             {
                 _north1 = !_north1;
             }
@@ -513,7 +481,8 @@ namespace PixelPerfect
             _configuration.Enabled = _enabled;
             _configuration.Combat = _combat;
             _configuration.Circle = _circle;
-            _configuration.Instance = _instance;
+            _configuration.Instance = _instance; 
+            _configuration.Cutscene = _cutscene;
             _configuration.Col = _col;
             _configuration.Col2 = _col2;
             _configuration.ColRing = _colRing;
